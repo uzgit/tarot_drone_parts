@@ -17,6 +17,7 @@
 include <../library/tarot680Modules.scad>
 include <../library/shapes.scad>
 include <../library/roundCornersCube.scad>
+include <../library/nuts_and_bolts.scad>
 
 draft = false;
 $fn = 60;
@@ -34,7 +35,7 @@ module m3_standoff(height = 10)
 {
     standoff_outer_diameter = 6.2;
     m3_hole_diameter        = 3.2;
-    screw_head_depth = 3.5;
+    screw_head_depth = 10;
     screw_head_radius = 5.25;
     difference()
     {
@@ -55,7 +56,7 @@ module m3_standoff(height = 10)
 diameter = 177;
 
 draft_thickness = 0.3;
-final_thickness = 1.5;
+final_thickness = 3;
 
 thickness = final_thickness;
 
@@ -65,7 +66,7 @@ base_plate_screw_void_size = 7;
 
 module center_hole()
 {
-    side_length = 38;
+    side_length = 30;
     roundness = 10;
     roundCornersCube(side_length, side_length, cut_thickness, roundness);
 }
@@ -187,7 +188,9 @@ module raspberry_pi_holes()
             union()
             {
                 translate([x_offset, y_offset, z_offset]) screw_hole_cylinder();
-                translate([x_offset, y_offset, -thickness]) base_plate_screw_head_cone();
+//                translate([x_offset, y_offset, -thickness]) base_plate_screw_head_cone();
+                translate([x_offset, y_offset, z_offset]) nutHole(3);
+                translate([x_offset, y_offset, z_offset + 2]) nutHole(3);
             }
         }
     }
@@ -265,25 +268,34 @@ module hinge_mount()
         union ()
         {
             // bottom of the hinge is like a cube
-            translate([-x_length / 2.0, y_translation, thickness / 2.0]) cube([x_length, hinge_outer_diameter, 4.5]);
+            translate([-x_length / 2.0, y_translation, thickness / 2.0])
+            cube([x_length, hinge_outer_diameter, 4.5]);
             
             // top of the hinge is like a cylinder
-            translate([-x_length / 2.0, y_translation + 3.1, (-thickness/2.0) + 6]) rotate([0, 90, 0]) cylinder(d = hinge_outer_diameter, h = x_length);
+            translate([-x_length / 2.0, y_translation + 3.1, (-thickness/2.0) + 6])
+            rotate([0, 90, 0])
+            cylinder(d = hinge_outer_diameter, h = x_length);
         }
         {
             // cylinder for the hinge pin (which can be a screw like M3x30mm)
-            translate([-x_length / 2.0, y_translation + 3.1, (-thickness/2.0) + 6]) rotate([0, 90, 0]) cylinder(d = 3.2, h = x_length);
+            translate([-x_length / 2.0, y_translation + 3.1, (-thickness/2.0) + 6])
+            rotate([0, 90, 0])
+            cylinder(d = 3.2, h = x_length);
             
             // cut off the leftmost part of the hinge
-            translate([-x_length / 2.0, y_translation - 10, 0]) cube([(x_length / 2.0) - (2.5 * hinge_width), 20, 20]);
+            translate([-x_length / 2.0, y_translation - 10, 0])
+            cube([(x_length / 2.0) - (2.5 * hinge_width), 20, 20]);
             // cut off the second hinge knuckle
-            translate([-1.5 * hinge_width, y_translation - 10, 0]) cube([hinge_width, 20, 20]);
+            translate([-1.5 * hinge_width, y_translation - 10, 0])
+            cube([hinge_width, 20, 20]);
             
             // cut off the fourth hinge knuckle
-            translate([0.5 * hinge_width, y_translation - 10, 0]) cube([hinge_width, 20, 20]);
+            translate([0.5 * hinge_width, y_translation - 10, 0])
+            cube([hinge_width, 20, 20]);
             
             // cut off the rightmost part of the hinge
-            translate([2.5 * hinge_width, y_translation - 10, 0]) cube([(x_length / 2.0) - (2.5 * hinge_width), 20, 20]);
+            translate([2.5 * hinge_width, y_translation - 10, 0])
+            cube([(x_length / 2.0) - (2.5 * hinge_width), 20, 20]);
         }
     }
 }
@@ -293,7 +305,7 @@ module velcro_slit()
     //roundCornersCube(side_length, side_length, thickness, roundness);
     x_length = 50;
     y_length = 15;
-    hinge_mount_thickness = 2.5;
+    hinge_mount_thickness = thickness;
     roundness = 10;
     
     y_translation = -9;
@@ -349,12 +361,12 @@ module tarot_680_base_plate()
 // High-level component orientation variables
 // ******************************************
 raspberry_pi_rotation               = [0, 0, 0];
-raspberry_pi_translation            = [-42, -70, 0];
+raspberry_pi_translation            = [-43, -57.5, 0];
 centered_raspberry_pi_translation   = [-42, -27, 0];
 jetson_nano_rotation                = [0, 0, -90];
 jetson_nano_translation             = [-42, 56, 0];
-google_coral_rotation               = [0, 0, ];
-google_coral_translation            = [-42, 13, 0];
+google_coral_rotation               = [0, 0, 0];
+google_coral_translation            = [-32, 5, 0];
 // ******************************************
 
 // add or remove components from here
@@ -366,18 +378,20 @@ difference()
         tarot_680_base_plate();
         
         // hinge and velcro slit for canopy
-        translate([0, -95, 0]) hinge_mount();
-        translate([0, 95, 0]) rotate([0, 0, 180]) velcro_slit();
+//        translate([0, -95, 0]) hinge_mount();
         
+        translate([0, 95, 0]) rotate([0, 0, 180]) velcro_slit();
+        translate([0, -95, 0]) rotate([0, 0, 0]) velcro_slit();
         
         // if you add standoffs then you should remember to add the holes for them in the part below
         // standoffs for raspberry pi (presumably with Navio2)
-//        translate(raspberry_pi_translation) rotate(raspberry_pi_rotation) raspberry_pi_standoffs(height = 10);
-        translate(centered_raspberry_pi_translation) rotate(raspberry_pi_rotation) raspberry_pi_standoffs(height = 10);
+        translate(raspberry_pi_translation) rotate(raspberry_pi_rotation) raspberry_pi_standoffs(height = 10);
+        translate(google_coral_translation) rotate(google_coral_rotation) raspberry_pi_standoffs(height = 10);
     }
     union()
     {
         // remove components here
+        translate([0, 0, -thickness])
         center_hole();
         lightening_holes();
         tarot_680_base_plate_screw_holes();
@@ -385,8 +399,8 @@ difference()
         
         // add holes for standoffs here
         // holes through base plate for raspberry pi standoffs
-//        translate(raspberry_pi_translation) rotate(raspberry_pi_rotation) raspberry_pi_holes();
-        translate(centered_raspberry_pi_translation) rotate(raspberry_pi_rotation) raspberry_pi_holes();
+        translate(raspberry_pi_translation) rotate(raspberry_pi_rotation) raspberry_pi_holes();
+        translate(google_coral_translation) rotate(google_coral_rotation) raspberry_pi_holes();
     }
 }
 // ********************** /main **********************
