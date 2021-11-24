@@ -84,7 +84,7 @@ module tarot_680_base_plate_screw_holes(void_thickness)
     }
 }
 
-module base_plate( thickness=3.5, bottom_thickness=2, radius=198/2, wall_height=15, wall_thickness=3, edge_thickness=1.5, edge_height=1.5 )
+module base_plate( thickness=3.5, bottom_thickness=2, radius=198/2, wall_height=15, wall_thickness=3, edge_thickness=1, edge_height=1.5 )
 {
     difference()
     {
@@ -121,7 +121,7 @@ module base_plate( thickness=3.5, bottom_thickness=2, radius=198/2, wall_height=
         {
             tarot_680_base_plate_screw_holes(thickness);
             
-            cylinder(d=15, h=thickness);
+            cylinder(d=21, h=thickness);
         }
     }
 }

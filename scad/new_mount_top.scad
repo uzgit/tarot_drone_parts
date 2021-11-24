@@ -184,7 +184,7 @@ module top(radius=198/2, height=70, wall_thickness=3, wall_height=5, edge_thickn
         union()
         {
             translate([0, 0, edge_height - wall_thickness + 70])
-            cylinder(d=15, h=wall_thickness);
+            cylinder(d=21, h=wall_thickness);
         }
     }
 }
