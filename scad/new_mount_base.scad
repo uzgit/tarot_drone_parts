@@ -87,7 +87,7 @@ module tarot_680_base_plate_screw_holes(void_thickness)
 module supports()
 {
     width = 10;
-    height = 20;
+    height = 15;
     translation = 45;
     for( x_translation = [-translation, translation] )
     {
