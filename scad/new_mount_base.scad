@@ -84,7 +84,28 @@ module tarot_680_base_plate_screw_holes(void_thickness)
     }
 }
 
-module base_plate( thickness=4.5, bottom_thickness=3, radius=198/2, wall_height=35, wall_thickness=3, edge_thickness=1, edge_height=3 )
+module supports()
+{
+    width = 10;
+    height = 20;
+    translation = 45;
+    for( x_translation = [-translation, translation] )
+    {
+        for( y_translation = [-translation, translation] )
+        {
+            translate([x_translation - width/2, y_translation -width/2, 0])
+            difference()
+            {
+                cube([width, width, height]);
+                
+                translate([width/2, width/2, 0])
+                cylinder(d=3.2, h=height);
+            }
+        }
+    }
+}
+
+module base_plate( thickness=4.5, bottom_thickness=4, radius=205/2, wall_height=35, wall_thickness=3, edge_thickness=1.3, edge_height=3 )
 {
     difference()
     {
@@ -108,6 +129,9 @@ module base_plate( thickness=4.5, bottom_thickness=3, radius=198/2, wall_height=
                 dodecagon_prism_rotated(height=wall_height, radius=radius);
                 dodecagon_prism_rotated(height=wall_height, radius=radius-wall_thickness);
             }
+            
+            translate([0, 0, thickness])
+            supports();
             
             // edge
             translate([0, 0, thickness+wall_height])
@@ -144,7 +168,7 @@ module base_plate( thickness=4.5, bottom_thickness=3, radius=198/2, wall_height=
 //    }
 //}
 
-module top(radius=198/2, height=70, wall_thickness=3, wall_height=5, edge_thickness=1.5, edge_height=1.5 )
+module top(radius=205/2, height=70, wall_thickness=3, wall_height=5, edge_thickness=1.8, edge_height=3 )
 {
     difference()
     {
@@ -191,5 +215,5 @@ module top(radius=198/2, height=70, wall_thickness=3, wall_height=5, edge_thickn
 
 base_plate();
 
-//translate([0, 0, 50])
+//translate([0, 0, 200])
 //top();

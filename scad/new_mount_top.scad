@@ -144,7 +144,7 @@ module base_plate( thickness=3.5, bottom_thickness=2, radius=198/2, wall_height=
 //    }
 //}
 
-module top(radius=198/2, height=70, wall_thickness=3, wall_height=5, edge_thickness=2, edge_height=3 )
+module top(radius=205/2, height=70, wall_thickness=3, wall_height=5, edge_thickness=1.8    , edge_height=3 )
 {
     difference()
     {
