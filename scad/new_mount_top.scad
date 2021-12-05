@@ -1,6 +1,6 @@
 include <../library/regular_shapes.scad>
 
-//$fn=10;
+//$fn=60;
 
 module dodecagon_rotated(radius, rotation=15)
 {
@@ -182,7 +182,7 @@ module top(radius=205/2, height=70, wall_thickness=3, wall_height=5, edge_thickn
             }
         }
         union()
-        {
+        {            
             translate([0, 0, edge_height - wall_thickness + 70])
             cylinder(d=21, h=wall_thickness);
         }

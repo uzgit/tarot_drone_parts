@@ -1,6 +1,6 @@
 include <../library/regular_shapes.scad>
 
-//$fn=10;
+$fn=60;
 
 module dodecagon_rotated(radius, rotation=15)
 {
