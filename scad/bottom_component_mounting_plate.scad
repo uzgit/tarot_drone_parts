@@ -1,4 +1,5 @@
 include <../library/regular_shapes.scad>
+include <../library/boxes.scad>
 
 $fn=10;
 
@@ -207,7 +208,9 @@ module battery_holder()
         union()
         {
             // holder
-            cube([battery_side_length + thickness*2, battery_length, battery_side_length + thickness*2]);
+//            cube([battery_side_length + thickness*2, battery_length, battery_side_length + thickness*2]);
+            roundedCube([battery_side_length + thickness*2, battery_length, battery_side_length + thickness*2], 5, false, false);
+            roundedCube([battery_side_length + thickness*2, battery_length, 5], 5, false, false);
         }
         
         union()
@@ -217,8 +220,8 @@ module battery_holder()
             cube([battery_side_length, battery_length, battery_side_length]);
             
             // velcro strip slits
-            translation = 40;
-            length = 50;
+            translation = 30;
+            length = 30;
             for( y_translation = [-translation, translation] )
             {
                 translate([0, battery_length/2 + y_translation -length/2, thickness])
