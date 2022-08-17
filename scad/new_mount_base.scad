@@ -168,7 +168,7 @@ module base_plate( thickness=4.5, bottom_thickness=4, radius=205/2, wall_height=
 //    }
 //}
 
-module top(radius=205/2, height=70, wall_thickness=3, wall_height=5, edge_thickness=1.8, edge_height=3 )
+module top(radius=205/2, height=90, wall_thickness=3, wall_height=5, edge_thickness=1.8, edge_height=5 )
 {
     difference()
     {
@@ -190,30 +190,30 @@ module top(radius=205/2, height=70, wall_thickness=3, wall_height=5, edge_thickn
                     translate([0, 0, edge_height])
                     dodecagon_prism_rotated(height=wall_height, radius=radius);
                     
-                    translate([0, 0, edge_height - wall_height + 70])
+                    translate([0, 0, edge_height - wall_height + height])
                     dodecagon_prism_rotated(height=wall_height, radius=radius/1.2);
                 }
                 
-                        hull()
+                hull()
                 {
                     // wall
                     translate([0, 0, edge_height])
                     dodecagon_prism_rotated(height=wall_height, radius=radius-wall_thickness);
                     
-                    translate([0, 0, edge_height - wall_height + 70])
+                    translate([0, 0, edge_height - wall_height + height])
                     dodecagon_prism_rotated(height=wall_height-wall_thickness, radius=(radius/1.2)-wall_thickness);
                 }
             }
         }
         union()
-        {
-            translate([0, 0, edge_height - wall_thickness + 70])
-            cylinder(d=15, h=wall_thickness);
+        {            
+            translate([0, 0, edge_height - wall_thickness + height])
+            cylinder(d=21, h=wall_thickness);
         }
     }
 }
 
 base_plate();
 
-//translate([0, 0, 200])
+//translate([0, 0, 50])
 //top();

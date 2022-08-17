@@ -1,7 +1,7 @@
 include <../library/regular_shapes.scad>
 include <../library/boxes.scad>
 
-$fn=60;
+$fn=20;
 
 module dodecagon_rotated(radius, rotation=15)
 {
@@ -177,26 +177,80 @@ module top(radius=205/2, height=70, wall_thickness=3, wall_height=5, edge_thickn
     }
 }
 
+//module battery_holder_bottom()
+//{
+//    battery_length      = 180;
+//    battery_side_length = 85;
+//    thickness           = 10;
+//    
+//    translate([0, 0, battery_side_length])
+//    rotate([90, 90, 0])
+//    hull()
+//    {
+//        roundedCube([thickness, battery_side_length + thickness, battery_length], 5, true, true);
+//        translate([thickness/2, 0, 0])
+//        cube([1, battery_side_length + thickness, battery_length], true);
+//    }
+//}
+
 module battery_holder_bottom()
 {
     battery_length      = 180;
     battery_side_length = 70;
+    width = 85;
     thickness           = 10;
     
-    translate([0, 0, battery_side_length])
-    rotate([90, 90, 0])
-    hull()
+    difference()
     {
-        roundedCube([thickness, battery_side_length + thickness, battery_length], 5, true, true);
-        translate([thickness/2, 0, 0])
-        cube([1, battery_side_length + thickness, battery_length], true);
+        translate([0, 0, battery_side_length])
+        rotate([90, 90, 0])
+        hull()
+        {
+            roundedCube([thickness, width + thickness, battery_length], 5, true, true);
+            translate([thickness/2, 0, 0])
+            cube([1, width + thickness, battery_length], true);
+        }
+        
+        union()
+        {
+            
+            translate([0, 0, battery_side_length])
+            for( x_translation = [-width/2, width/2] )
+            {
+                y_translation_abs = width + thickness/2;
+                for( y_translation = [-y_translation_abs, y_translation_abs] )
+                {
+                    translate([x_translation, y_translation, 0])
+                    rotate([90*sign(y_translation), 0, 0])
+                    cylinder(d=4, h=6, center=false);
+                }
+            }
+        
+                num_screws_per_side = 5;
+                y_translation_increment = battery_length / num_screws_per_side;
+                translate( [0, -battery_length / 2 - y_translation_increment/2, battery_side_length ])
+                for( x_translation = [-width/2, width/2] )
+                for( y_translation = [ 1 : num_screws_per_side ] )
+                {
+                    translate( [ x_translation, y_translation * y_translation_increment, -thickness+4] )
+                    {
+                        cylinder(d=3.2, h=thickness+1, center=false);
+                        
+                        translate([0, 0, 6])
+                        cylinder(d=6.5, h=10, center=false);
+                    }
+                }
+        }
     }
+    
+
 }
 
 module battery_holder()
 {
     battery_length      = 180;
     battery_side_length = 70;
+    width = 85;
     thickness           = 10;
     
     strap_gap_thickness = 5;
@@ -209,7 +263,7 @@ module battery_holder()
     threaded_insert_height = 6;
     
     // walls
-    for( x_translation = [-battery_side_length/2, battery_side_length/2] )
+    for( x_translation = [-width/2, width/2] )
     {
         difference()
         {
@@ -255,10 +309,10 @@ module battery_holder()
                 for( y_translation = [-translation, translation] )
                 {
                     translate([0, y_translation, clearance/2])
-                    cube([battery_side_length + 2*thickness, length, clearance], true);
+                    cube([width + 2*thickness, length, clearance], true);
                     
-                    translate([0, y_translation, 50 + lower_clearance/2])
-                    cube([battery_side_length + 2*thickness, length, lower_clearance], true);
+                    translate([0, y_translation, 53 + lower_clearance/2])
+                    cube([width + 2*thickness, length, lower_clearance], true);
                 }
             }
         }
@@ -296,6 +350,31 @@ module battery_holder()
 //    }
 }
 
+module plain_front()
+{
+    battery_side_length = 70;
+    width = 95;
+    thickness           = 10;
+    
+    height = battery_side_length + thickness;
+    
+    
+    
+    translate([0, 0, 0])
+    hull()
+    {
+        
+        translate([-width/2, -10, 0])
+        roundedCube([width, 10, height], 5, center=false);
+        
+        translate([-width/2, 0, 0])
+        union()
+        {
+            cube([width, 1, height-4.5], center=false);
+        }
+    }
+}
+
 module bottom_component_mounting_plate()
 {
     difference()
@@ -309,12 +388,16 @@ module bottom_component_mounting_plate()
         }
         union()
         {
-            tarot_680_base_plate_screw_holes(10);
+            tarot_680_base_plate_screw_holes(5);
         }
     }
 }
 
 bottom_component_mounting_plate();
 
-//translate([0, 0, 20])
-//battery_holder_bottom();
+translate([0, 0, 5])
+translate([0, 0, 15])
+battery_holder_bottom();
+
+translate([0, -100, 0])
+plain_front();

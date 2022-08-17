@@ -173,5 +173,5 @@ module top(radius=205/2, height=90, wall_thickness=3, wall_height=5, edge_thickn
 
 base_plate();
 
-translate([0, 0, 50])
-top();
+//translate([0, 0, 50])
+//top();
