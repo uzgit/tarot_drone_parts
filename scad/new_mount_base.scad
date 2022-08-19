@@ -208,7 +208,16 @@ module top(radius=205/2, height=90, wall_thickness=3, wall_height=5, edge_thickn
         union()
         {            
             translate([0, 0, edge_height - wall_thickness + height])
-            cylinder(d=21, h=wall_thickness);
+//            cylinder(d=21, h=wall_thickness);
+            {
+                cylinder(d=10, h=wall_thickness);
+                for( x_translation = [-10, 10] )
+                for( y_translation = [-10, 10] )
+                {
+                    translate([x_translation, y_translation, 0])
+                    cylinder(d=3.2, h=wall_thickness);
+                }
+            }
         }
     }
 }
