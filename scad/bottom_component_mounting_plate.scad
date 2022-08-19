@@ -3,7 +3,7 @@ include <../library/boxes.scad>
 
 $fn=20;
 
-module servo(width=38, depth=42, height=20, mount_width=6, mount_depth=60, extend=false, holes=true)
+module servo(width=41.5, depth=42, height=20, mount_width=6, mount_depth=60, extend=false, holes=true)
 {
     
     cube([width, depth, height], center=true);
