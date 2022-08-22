@@ -41,8 +41,8 @@ module cutoffs(exterior = 45, thickness=40, radius=145, angle=30)
 module strut()
 {
     x = 300;
-    y = 10;
-    z = 20;
+    y = 15;
+    z = 30;
     radius = 145;
     
     mount_x = 32;
@@ -60,7 +60,7 @@ module strut()
             cube([x, y, z], center=true);
             
             translate([-mount_x/2, -mount_y/2, -z/2])
-            roundedCube([mount_x, mount_y, mount_z], 5, sidesonly=true, center=false);
+            roundedCube([mount_x, mount_y, z/2], 5, sidesonly=true, center=false);
         }
         
         union()
@@ -77,9 +77,16 @@ module strut()
             for(x_translation = [-landing_gear_screw_x/2, landing_gear_screw_x/2])
             for(y_translation = [-landing_gear_screw_y/2, landing_gear_screw_y/2])
             translate([x_translation, y_translation, 0])
-            cylinder(d=2.7, h=100, center=true);
+            union()
+            {
+                translate([0, 0, -z/2])
+                cylinder(d=2.7, h=z/2);
+                
+                translate([0, 0, 0])
+                cylinder(d=5, h=z/2);
+            }
             
-            for( x_translation = [67, 102.5] )
+            for( x_translation = [11, 67, 102.5] )
             {
                 translate([x_translation, 0, -z/2])
                 union()
@@ -97,7 +104,7 @@ module strut()
             }
             
             // slice off the top
-            translate([0, 0, -z/2])
+            translate([0, 0, z/2])
             cube([1000, 1000, z], center=true);
         }
     }

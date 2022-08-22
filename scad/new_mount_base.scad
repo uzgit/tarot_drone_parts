@@ -98,14 +98,14 @@ module supports()
             {
                 cube([width, width, height]);
                 
-                translate([width/2, width/2, 0])
-                cylinder(d=3.2, h=height);
+                translate([width/2, width/2, height-6])
+                cylinder(d=4, h=6);
             }
         }
     }
 }
 
-module base_plate( thickness=4.5, bottom_thickness=4, radius=205/2, wall_height=35, wall_thickness=3, edge_thickness=1.3, edge_height=3 )
+module base_plate( thickness=4.5, bottom_thickness=4, radius=205/2, wall_height=35, wall_thickness=3, edge_thickness=1.3, edge_height=5 )
 {
     difference()
     {
@@ -222,7 +222,7 @@ module top(radius=205/2, height=90, wall_thickness=3, wall_height=5, edge_thickn
     }
 }
 
-//base_plate();
+base_plate();
 
 //translate([0, 0, 50])
-top();
+//top();
