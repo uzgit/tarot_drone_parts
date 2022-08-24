@@ -93,7 +93,7 @@ module rod_with_leg(angle=0, rod=true, angle=0)
     
     translate([170, 0, -10])
     rotate([180, 0, 0])
-    leg_rod(diameter=16,inner_diameter=10.5, angle=angle);
+    leg_rod(diameter=16,inner_diameter=10.2, angle=angle);
 }
 
 module leg_structure()
