@@ -490,13 +490,95 @@ module bottom_component_mounting_plate()
     }
 }
 
+module rear_battery_door()
+{
+    battery_side_length = 70;
+    width = 95;
+    thickness           = 10;
+    
+    height = battery_side_length + thickness;
+    threaded_insert_diameter = 4;
+    threaded_insert_height = 6;
+    
+    difference()
+    {
+        hull()
+        {            
+            translate([-width/2, -10, 0])
+            roundedCube([width, thickness, height], 5, center=false);
+            
+            translate([-width/2, 0, 0])
+            union()
+            {
+//                cube([width, 1, height-4.5], center=false);
+                
+//                translate([-width/2, 1, 70])
+                rotate([90, 0, 0])
+                roundedCube([width, height, 1], 5, true, center=false);
+            }
+        }
+        
+        union()
+        {
+            y_translation = -thickness;
+            z_translation_increment = battery_side_length / 3;
+            translate([0, 0, -z_translation_increment/2])
+            for( x_translation = [-(width-thickness)/2, (width-thickness)/2] )
+            for( z_translation = [ 1 : 3 ] )
+            {
+                rotation = -90;
+                
+                translate([x_translation, y_translation, z_translation * z_translation_increment])
+                rotate( [ rotation, 0, 0 ] )
+                {
+                    cylinder(d=3.2, h=15);
+                    cylinder(d=6.5, h=5);
+                }
+            }
+            
+            z_translation = height - 5;
+            y_translation = -thickness;
+            for( x_translation = [-(width-thickness)/2, (width-thickness)/2] )
+            {
+                rotation = -90;
+                
+                translate([x_translation, y_translation, z_translation])
+                rotate( [ rotation, 0, 0 ] )
+                {
+                    cylinder(d=3.2, h=15);
+                    cylinder(d=6.5, h=5);
+                }
+            }
+            
+//            translate([0, 0, 40])
+//            rotate([0, 90, 0])
+//            servo();
+//            
+//            translate([0, 0, 40])
+//            for( x_translation = [-10/2, 10/2] )
+//            {
+//                for(z_translation = [ -47.5/2, 47.5/2 ])
+//                {
+//                    translate([x_translation, 0, z_translation])
+//                    rotate([90, 0, 0])
+//                    union()
+//                    {
+//                        cylinder(d=4, h=6);
+//                        cylinder(d=3.2, h=10);
+//                    }
+//                }
+//            }
+        }
+    }
+}
+
 //bottom_component_mounting_plate();
 //
 //translate([0, 0, 5])
 //translate([0, 0, 15])
 //battery_holder_bottom();
 
-translate([0, -100, 0])
-plain_front();
+//translate([0, -100, 0])
+rear_battery_door();
 
     
