@@ -1,5 +1,6 @@
 include <../library/regular_shapes.scad>
 include <../library/boxes.scad>
+include <../library/nuts_and_bolts.scad>
 
 $fn=20;
 
@@ -490,7 +491,7 @@ module bottom_component_mounting_plate()
     }
 }
 
-module rear_battery_door()
+module front_cover_gimbal()
 {
     battery_side_length = 70;
     width = 95;
@@ -502,20 +503,26 @@ module rear_battery_door()
     
     difference()
     {
-        hull()
-        {            
-            translate([-width/2, -10, 0])
-            roundedCube([width, thickness, height], 5, center=false);
-            
-            translate([-width/2, 0, 0])
-            union()
-            {
-//                cube([width, 1, height-4.5], center=false);
+        union()
+        {
+            hull()
+            {            
+                translate([-width/2, -10, 0])
+                roundedCube([width, thickness, height], 5, center=false);
                 
-//                translate([-width/2, 1, 70])
-                rotate([90, 0, 0])
-                roundedCube([width, height, 1], 5, true, center=false);
+                translate([-width/2, 0, 0])
+                union()
+                {
+    //                cube([width, 1, height-4.5], center=false);
+                    
+    //                translate([-width/2, 1, 70])
+                    rotate([90, 0, 0])
+                    roundedCube([width, height, 1], 5, true, center=false);
+                }
+                
+                
             }
+
         }
         
         union()
@@ -550,24 +557,36 @@ module rear_battery_door()
                 }
             }
             
-//            translate([0, 0, 40])
-//            rotate([0, 90, 0])
-//            servo();
-//            
-//            translate([0, 0, 40])
-//            for( x_translation = [-10/2, 10/2] )
-//            {
-//                for(z_translation = [ -47.5/2, 47.5/2 ])
-//                {
-//                    translate([x_translation, 0, z_translation])
-//                    rotate([90, 0, 0])
-//                    union()
-//                    {
-//                        cylinder(d=4, h=6);
-//                        cylinder(d=3.2, h=10);
-//                    }
-//                }
-//            }
+            translate([0, 0, 70])
+            rotate([90, 0, 0])
+            {
+                cylinder(d=4.5, h=thickness);
+//                nutHole(4); // screw goes the other way actually
+            }
+            
+            translate([0, 0, 70])
+            rotate([0, -15, 0])
+            translate([-41.5/2+10, 0, -34.5])
+            rotate([0, 90, 0])
+            {
+                rotate([0, 90, 0])
+                
+                servo();
+                
+                for( x_translation = [-10/2, 10/2] )
+                {
+                    for(z_translation = [ -47.5/2, 47.5/2 ])
+                    {
+                        translate([x_translation, 0, z_translation])
+                        rotate([90, 0, 0])
+                        union()
+                        {
+                            cylinder(d=4, h=6);
+                            cylinder(d=3.2, h=10);
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -579,6 +598,6 @@ module rear_battery_door()
 //battery_holder_bottom();
 
 //translate([0, -100, 0])
-rear_battery_door();
+front_cover_gimbal();
 
     
