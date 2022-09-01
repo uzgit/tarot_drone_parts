@@ -557,14 +557,14 @@ module front_cover_gimbal()
                 }
             }
             
-            translate([0, 0, 70])
+            translate([0, 0, 60])
             rotate([90, 0, 0])
             {
                 cylinder(d=4.5, h=thickness);
 //                nutHole(4); // screw goes the other way actually
             }
             
-            translate([0, 0, 70])
+            translate([0, 0, 60])
             rotate([0, -15, 0])
             translate([-41.5/2+10, 0, -34.5])
             rotate([0, 90, 0])
