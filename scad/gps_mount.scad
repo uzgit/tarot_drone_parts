@@ -281,11 +281,11 @@ module top(inner_diameter=32, outer_diameter=69, height=4.5, thickness = 3, cent
     }
 }
 
-//base();
-//
-//translate([0, 0, 75])
-//stand();
+base();
 
-//translate([0, 0, 130])
-//rotate([180, 0, 0])
+translate([0, 0, 75])
+stand();
+
+translate([0, 0, 130])
+rotate([180, 0, 0])
 top();
