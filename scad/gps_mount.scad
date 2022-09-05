@@ -124,7 +124,7 @@ module base(diameter=40, thickness = 10, center_hole_diameter=10, stand_height=3
                 }
                 hull()
                 {
-                    cylinder(d=stand_diameter, h=1);
+                    cylinder(d=stand_diameter - stand_thickness*2, h=1);
                     
                     translate([15, 0, intermediate_mount_height-1])
                     cylinder(d=25, h=1);
@@ -286,6 +286,6 @@ base();
 translate([0, 0, 75])
 stand();
 
-translate([0, 0, 130])
-rotate([180, 0, 0])
-top();
+//translate([0, 0, 130])
+//rotate([180, 0, 0])
+//top();
