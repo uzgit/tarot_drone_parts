@@ -311,6 +311,39 @@ module assembly()
     }
 }
 
+module servo_gear_2(height=9)
+{
+    // absolute axis
+    rotate([0, -90, 0])
+    rotate([0, 0, 8]) // gear axis
+    difference()
+    {
+        gear(22, height, 21);
+        servo_mount_screw_holes();
+    }
+}
+
+module assembly()
+{
+//    camera_mount_skinny();
+//    translate([-camera_width/2 - 1.5*camera_mount_thickness, 0, 0])
+//    camera_mount_gear();
+    tilt_mount_skinny();
+//    tilt_mount_gear();
+//    
+//    translate([-camera_width/2 - 1.5*camera_mount_thickness, 34.5, 0])
+//    servo_gear();
+//    
+    difference()
+    {
+    translate([-camera_width/2 - 1.5*camera_mount_thickness + 1, 34.5, 0])
+    servo_mount();
+    
+    translate([-camera_width/2 - 1.5*camera_mount_thickness, 34.5, 0])
+    servo();
+    }
+}
+
 module tilt_mount_gear()
 {
     translate([0, 100, 0])
@@ -330,8 +363,12 @@ module tilt_mount_gear()
     }
 }
 
-assembly();
+//assembly();
 //rotate([0, 90, 0])
 //roundedCube([30, 60, 30], 15, true, center=false);
 
 
+//servo_gear();
+//
+//translate([10, 0, 0])
+servo_gear_2();
