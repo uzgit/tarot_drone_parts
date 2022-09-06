@@ -164,7 +164,7 @@ module base(diameter=40, thickness = 10, center_hole_diameter=10, stand_height=3
 
 module stand(inner_diameter=32, outer_diameter=68, height=4.5, thickness = 3, center_hole_diameter=10, stand_height=30, stand_diameter=16, stand_thickness=3, intermediate_mount_height=15, base_height=5, )
 {
-    main_cylinder_height=height+base_height+1;
+    main_cylinder_height=height+base_height + 1;
     difference()
     {
         union()
@@ -198,18 +198,6 @@ module stand(inner_diameter=32, outer_diameter=68, height=4.5, thickness = 3, ce
                 cube([side, side, side], center=true);
             }
             
-//            x_translation_abs_ = 30;
-//            for( x_translation = [0, -x_translation_abs_, x_translation_abs_] )
-//            {
-//                translate([x_translation, 0, 0])
-//                {
-//                    cylinder(d=3.2, h=height + base_height);
-//                    
-//                    translate([0, 0, 3])
-//                    cylinder(d=6, h=main_cylinder_height);
-//                }
-//            }
-            
             // cube for the antenna
             translate([-20, 0, 0])
             {
@@ -241,11 +229,11 @@ module stand(inner_diameter=32, outer_diameter=68, height=4.5, thickness = 3, ce
     }
 }
 
-module top(inner_diameter=32, outer_diameter=68, height=4.5, thickness = 3, center_hole_diameter=10, stand_height=30, stand_diameter=16, stand_thickness=3, intermediate_mount_height=15, base_height=5)
+module top(inner_diameter=32, outer_diameter=68, height=3.5, thickness = 3, center_hole_diameter=10, stand_height=30, stand_diameter=16, stand_thickness=3, intermediate_mount_height=15, base_height=5)
 {
     difference()
     {
-        cylinder(d=85, h=height+base_height-1+8.5);
+        cylinder(d=85, h=height+base_height-1+8.5 - 4);
         
         union()
         {
@@ -281,11 +269,11 @@ module top(inner_diameter=32, outer_diameter=68, height=4.5, thickness = 3, cent
     }
 }
 
-base();
-
-translate([0, 0, 75])
-stand();
-
+//base();
+//
+//translate([0, 0, 75])
+//stand();
+//
 //translate([0, 0, 130])
 //rotate([180, 0, 0])
-//top();
+top();
