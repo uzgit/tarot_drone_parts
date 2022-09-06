@@ -4,7 +4,7 @@ include <../library/boxes.scad>
 
 loft_height=4.5;
 
-$fn=120;
+$fn=20;
 
 //cylinder(d=31, h=2);
 
@@ -162,9 +162,9 @@ module base(diameter=40, thickness = 10, center_hole_diameter=10, stand_height=3
     }
 }
 
-module stand(inner_diameter=32, outer_diameter=68, height=4.5, thickness = 3, center_hole_diameter=10, stand_height=30, stand_diameter=16, stand_thickness=3, intermediate_mount_height=15, base_height=5, )
+module stand(inner_diameter=32, outer_diameter=68, height=4, thickness = 3, center_hole_diameter=10, stand_height=30, stand_diameter=16, stand_thickness=3, intermediate_mount_height=15, base_height=5, )
 {
-    main_cylinder_height=height+base_height + 1;
+    main_cylinder_height=height+base_height - 1 + 4;
     difference()
     {
         union()
@@ -224,12 +224,12 @@ module stand(inner_diameter=32, outer_diameter=68, height=4.5, thickness = 3, ce
     translate([0, 0, base_height])
     for( translation_y = [-translation_y_abs, translation_y_abs])
     {
-        translate([0, translation_y, 3.5/2])
+        translate([-2, translation_y, 3.5/2])
         cube([gps_tab_thickness, gps_tab_thickness, 3.5], center=true);
     }
 }
 
-module top(inner_diameter=32, outer_diameter=68, height=3.5, thickness = 3, center_hole_diameter=10, stand_height=30, stand_diameter=16, stand_thickness=3, intermediate_mount_height=15, base_height=5)
+module top(inner_diameter=32, outer_diameter=68, height=4, thickness = 3, center_hole_diameter=10, stand_height=30, stand_diameter=16, stand_thickness=3, intermediate_mount_height=15, base_height=5)
 {
     difference()
     {
@@ -269,11 +269,11 @@ module top(inner_diameter=32, outer_diameter=68, height=3.5, thickness = 3, cent
     }
 }
 
-//base();
-//
-//translate([0, 0, 75])
-//stand();
-//
-//translate([0, 0, 130])
-//rotate([180, 0, 0])
+base();
+
+translate([0, 0, 75])
+stand();
+
+translate([0, 0, 130])
+rotate([180, 0, 0])
 top();
