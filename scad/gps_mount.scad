@@ -164,7 +164,7 @@ module base(diameter=40, thickness = 10, center_hole_diameter=10, stand_height=3
 
 module stand(inner_diameter=32, outer_diameter=68, height=6, thickness = 3, center_hole_diameter=10, stand_height=30, stand_diameter=16, stand_thickness=3, intermediate_mount_height=15, base_height=5, )
 {
-    main_cylinder_height=height+base_height - 1 + 4;
+    main_cylinder_height=height+base_height - 1 + 5;
     difference()
     {
         union()
@@ -272,8 +272,8 @@ module top(inner_diameter=32, outer_diameter=68, height=4, thickness = 3, center
 //base();
 //
 //translate([0, 0, 75])
-stand();
+//stand();
 //
 //translate([0, 0, 130])
 //rotate([180, 0, 0])
-//top();
+top();
