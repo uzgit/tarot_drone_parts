@@ -1,6 +1,7 @@
 include <../library/regular_shapes.scad>
+include <../library/boxes.scad>
 
-$fn=60;
+$fn=120;
 
 module dodecagon_rotated(radius, rotation=15)
 {
@@ -70,7 +71,7 @@ module tarot_680_base_plate_screw_holes(void_thickness)
         for ( y_offset = [-73, 73] )
         {
             translate([x_offset, y_offset, 0])
-            cylinder(d=4, h=void_thickness);
+            cylinder(d=3.2, h=void_thickness);
         }
     }
     
@@ -79,7 +80,7 @@ module tarot_680_base_plate_screw_holes(void_thickness)
         for ( y_offset = [-11, 11] )
         {
             translate([x_offset, y_offset, 0])
-            cylinder(d=4, h=void_thickness);
+            cylinder(d=3.2, h=void_thickness);
         }
     }
 }
@@ -88,7 +89,7 @@ module supports()
 {
     width = 10;
     height = 15;
-    translation = 45;
+    translation = 55;
     for( x_translation = [-translation, translation] )
     {
         for( y_translation = [-translation, translation] )
@@ -143,9 +144,16 @@ module base_plate( thickness=4.5, bottom_thickness=4, radius=205/2, wall_height=
         }
         union()
         {
+            through_hole_diameter = 20;
+            
             tarot_680_base_plate_screw_holes(thickness);
             
-            cylinder(d=21, h=thickness);
+            dodecagon_prism_rotated(height=edge_height, radius=50);
+            
+            for(angle = [0 : 60 : 359])
+                rotate([0, 0, angle])
+                translate([0, -63, 0])
+                cylinder(d=through_hole_diameter, h=thickness);
         }
     }
 }

@@ -27,10 +27,9 @@ module support_mounts()
     }
 }
 
-module support_mount_voids(height=2)
+module support_mount_voids(height=2, translation = 45)
 {
     inner_width = 10;
-    translation = 45;
     for( x_translation = [-translation, translation] )
     {
         for( y_translation = [-translation, translation] )
@@ -42,9 +41,8 @@ module support_mount_voids(height=2)
     }
 }
 
-module support_mount_screw_voids()
+module support_mount_screw_voids(translation = 45)
 {
-    translation = 45;
     for( x_translation = [-translation, translation] )
     {
         for( y_translation = [-translation, translation] )
@@ -76,13 +74,18 @@ module component_mounting_plate()
             
             translate([0, 42.25+45, 4])
             bec_mount();
+            
+            translate([22.5, base_side_length/2, 4])
+            bec_switch_mount();
         }
         union()
         {
+            post_translation = 55;
             center_hole();
-            support_mount_screw_voids();
-            support_mount_voids();
+            support_mount_screw_voids(translation = post_translation);
+            support_mount_voids(translation = post_translation);
             pixhawk_holes();
+            twist_tie_holes();
         }
     }
 }
@@ -162,11 +165,50 @@ module bec_mount()
     y = 3;
     z = 30;
     
-    translate([0, -25/2, -4/2])
+    translate([0, -22.5, -2])
     cube([x, 25+3, 4], center=true);
     
-    translate([0, 0, z/2])
+    translate([0, -10, z/2])
     cube([x, y, z], center=true);
+}
+
+module bec_switch_mount()
+{
+    translate([0, -3, 0])
+    difference()
+    {
+        cube([18, 3, 11]);
+        union()
+        {
+            x_shift = 2;
+            for( x_translation = [0, 14] )
+            {
+//                translate([0, y_translation, 3])
+                translate([x_translation + x_shift, 0, 3])
+                rotate([-90, 0, 0])
+                cylinder(d=1.6, h=3);
+            }
+        }
+    }
+}
+
+module twist_tie_holes()
+{
+    // hdmi cord
+    translate([0, -55, 0])
+    cylinder(d=3.2, h=4);
+    
+    // raspberry pi wires
+    translate([-56, -10.5, 0])
+    for(y_translation = [-70/2, 70/2])
+        translate([0, y_translation, 0])
+        cylinder(d=3.2, h=4);
+    
+    // herelink wires
+    translate([56, 0, 0])
+    for(y_translation = [-45, 45])
+        translate([0, y_translation, 0])
+        cylinder(d=3.2, h=4);
 }
 
 component_mounting_plate();
