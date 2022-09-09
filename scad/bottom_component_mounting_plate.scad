@@ -2,7 +2,7 @@ include <../library/regular_shapes.scad>
 include <../library/boxes.scad>
 include <../library/nuts_and_bolts.scad>
 
-$fn=20;
+$fn=120;
 
 module servo(width=41.5, depth=42, height=20, mount_width=6, mount_depth=60, extend=false, holes=true)
 {
@@ -591,13 +591,84 @@ module front_cover_gimbal()
     }
 }
 
+module back_cover_velcro_slit()
+{
+    battery_side_length = 70;
+    width               = 10;
+    thickness           = 20;
+    
+    height                   = battery_side_length + 10;
+    threaded_insert_diameter = 4;
+    threaded_insert_height   = 6;
+    
+    difference()
+    {
+        union()
+        {
+            hull()
+            {            
+                translate([-width/2, -thickness, 0])
+                roundedCube([width, thickness, height], 5, center=false);
+                
+                translate([-width/2, 0, 0])
+                union()
+                {
+                    rotate([90, 0, 0])
+                    roundedCube([width, height, 1], 5, true, center=false);
+                }
+            }
+        }
+        
+        union()
+        {
+            x_translation = 0;
+            y_translation = -thickness;
+            z_translation_increment = battery_side_length / 3;
+            translate([0, 0, -z_translation_increment/2])
+            for( z_translation = [ 1 : 3 ] )
+            {
+                if( z_translation != 2 )
+                {
+                    rotation = -90;
+                    
+                    translate([x_translation, y_translation, z_translation * z_translation_increment])
+                    rotate( [ rotation, 0, 0 ] )
+                    {
+                        cylinder(d=3.2, h=thickness);
+                        cylinder(d=6.5, h=5);
+                    }
+                }
+            }
+            
+            x_translation = 0;
+            z_translation = height - 5;
+            y_translation = -thickness;
+            rotation = -90;
+                
+            translate([x_translation, y_translation, z_translation])
+            rotate( [ rotation, 0, 0 ] )
+            {
+                cylinder(d=3.2, h=thickness);
+                cylinder(d=6.5, h=5);
+            }
+            
+            translate([0, -7.5, 1.5 * z_translation_increment])
+            cube([width, 5, 27.5], center=true);
+        }
+    }
+}
+
 //bottom_component_mounting_plate();
 //
 //translate([0, 0, 5])
 //translate([0, 0, 15])
 //battery_holder_bottom();
-
+//
 //translate([0, -100, 0])
-front_cover_gimbal();
-
-    
+//front_cover_gimbal();
+//
+//translate([0, 100, 0])
+//for( x_translation = [-(85)/2, (85)/2] )
+//    translate([x_translation, 0, 0])
+//    rotate([0, 0, 180])
+    back_cover_velcro_slit();
