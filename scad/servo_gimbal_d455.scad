@@ -6,7 +6,7 @@ include <../library/nuts_and_bolts.scad>
 include <../library/lib-gear-dh.scad>
 include <../library/boxes.scad>
 
-$fn = 20;
+$fn = 120;
 
 motor_mount_outer_diameter = 26S;
 motor_mount_height = 14;
@@ -122,6 +122,31 @@ module servo_top_mount()
 //    }
 //}
 
+module camera_mount_screw_insert_support(screw_support_side_length = 10, depth=10)
+{
+    translate([0, -depth/2, 0])
+    difference()
+    {
+        union()
+        {
+            cube([screw_support_side_length, depth, screw_support_side_length]);
+        }
+        union()
+        {
+            rotate([0, 45, 0])
+            cube([screw_support_side_length, depth, 2*screw_support_side_length]);
+            
+            rotation = [0, 45, 0];
+            translate([0, 0, screw_support_side_length])
+            rotate(rotation)
+            translate([3, 0, 0])
+            rotate(-rotation)
+            rotate([-90, 0, 0])
+            cylinder(d=4, h=6);
+        }
+    }
+}
+
 module camera_mount_skinny(pivot_cylinder_height=5)
 {
     difference()
@@ -171,6 +196,26 @@ module camera_mount_skinny(pivot_cylinder_height=5)
             cube([usb_width, usb_depth, camera_mount_thickness], true);
         }
     }
+    
+//    cube([camera_width + camera_mount_thickness*2, camera_depth + camera_mount_thickness, camera_height + camera_mount_thickness*2], true);
+    
+    
+    
+//    translate([0, 0, 100])
+    translate([-64, 0, 5])
+    camera_mount_screw_insert_support(depth=camera_depth + camera_mount_thickness);
+    
+    translate([54, 0, 15])
+    rotate([0, 90, 0])
+    camera_mount_screw_insert_support(depth=camera_depth + camera_mount_thickness);
+    
+    translate([64, 0, -5])
+    rotate([0, 180, 0])
+    camera_mount_screw_insert_support(depth=camera_depth + camera_mount_thickness);
+    
+    translate([-54, 0, -15])
+    rotate([0, 270, 0])
+    camera_mount_screw_insert_support(depth=camera_depth + camera_mount_thickness);
 }
 
 module servo(width=37, depth=20, height=41)
@@ -325,23 +370,23 @@ module servo_gear_2(height=9)
 
 module assembly()
 {
-//    camera_mount_skinny();
+    camera_mount_skinny();
 //    translate([-camera_width/2 - 1.5*camera_mount_thickness, 0, 0])
 //    camera_mount_gear();
-    tilt_mount_skinny();
+//    tilt_mount_skinny();
 //    tilt_mount_gear();
 //    
 //    translate([-camera_width/2 - 1.5*camera_mount_thickness, 34.5, 0])
 //    servo_gear();
 //    
-    difference()
-    {
-    translate([-camera_width/2 - 1.5*camera_mount_thickness + 1, 34.5, 0])
-    servo_mount();
-    
-    translate([-camera_width/2 - 1.5*camera_mount_thickness, 34.5, 0])
-    servo();
-    }
+//    difference()
+//    {
+//    translate([-camera_width/2 - 1.5*camera_mount_thickness + 1, 34.5, 0])
+//    servo_mount();
+//    
+//    translate([-camera_width/2 - 1.5*camera_mount_thickness, 34.5, 0])
+//    servo();
+//    }
 }
 
 module tilt_mount_gear()
@@ -363,7 +408,7 @@ module tilt_mount_gear()
     }
 }
 
-//assembly();
+assembly();
 //rotate([0, 90, 0])
 //roundedCube([30, 60, 30], 15, true, center=false);
 
@@ -371,4 +416,4 @@ module tilt_mount_gear()
 //servo_gear();
 //
 //translate([10, 0, 0])
-servo_gear_2();
+//servo_gear_2();
