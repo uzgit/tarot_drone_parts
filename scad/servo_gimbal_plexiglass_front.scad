@@ -48,7 +48,7 @@ module rounded_rectangle(x=x, y=y, radius=2)
             for(x_translation = [-screw_x_translation/2, screw_x_translation/2])
             for(y_translation = [-screw_y_translation/2, screw_y_translation/2])
                 translate([x_translation, y_translation, 0])
-                circle(d=3.2);
+                circle(d=2.6);
         }
     }
 }
